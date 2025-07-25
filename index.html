@@ -620,10 +620,9 @@
             const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec';
             
             console.log('Current GOOGLE_SCRIPT_URL value:', GOOGLE_SCRIPT_URL);
-            console.log('URL check result:', GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec');
             
-            if (GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec') {
-                console.log('Google Sheets integration not configured yet');
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec') || !GOOGLE_SCRIPT_URL.startsWith('https://script.google.com')) {
+                console.log('Google Sheets integration not configured properly');
                 alert('Google Sheets URL not configured! Check the console for details.');
                 return;
             }
