@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iFood?</title>
+    <title>ai Food?</title>
     <style>
         * {
             margin: 0;
@@ -355,19 +355,19 @@
 </head>
 <body>
     <div class="header">
-        <h1>🤲 iFood?</h1>
+        <h1>🌠 ai Food?</h1>
     </div>
 
     <div class="restaurant-info">
         <div class="restaurant-banner">
             <div>
-                <div class="restaurant-name" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">iFood?</div>
+                <div class="restaurant-name" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">ai Food?</div>
             </div>
         </div>
         <div class="restaurant-details">
             <div class="restaurant-category">Diversos • Desejos • Demora</div>
             <div class="restaurant-stats">
-                <span>⭐ 5.0 (10k avaliações)</span>
+                <span>⭐ 5.0 (100k avaliações)</span>
                 <span>🚗 muitos y muitos min</span>
                 <span>🆓 Entrega sempre</span>
             </div>
@@ -387,26 +387,7 @@
                 <button class="add-button" onclick="addToCart('Desculpa', 0.00)">Adicionar</button>
             </div>
             
-            <div class="menu-item">
-                <div class="item-image">🍫🍫🍫</div>
-                <div class="item-details">
-                    <div class="item-name">Mil desculpas</div>
-                    <div class="item-description">Mil vezes um pedido de desculpa</div>
-                    <div class="item-price">R$ 0,00</div>
-                </div>
-                <button class="add-button" onclick="addToCart('Mil desculpas', 0.00)">Adicionar</button>
-            </div>
-            
-            <div class="menu-item">
-                <div class="item-image">🙏</div>
-                <div class="item-details">
-                    <div class="item-name">Perdão</div>
-                    <div class="item-description">Um pedido de perdão quase religioso</div>
-                    <div class="item-price">R$ 0,00</div>
-                </div>
-                <button class="add-button" onclick="addToCart('Perdão', 0.00)">Adicionar</button>
-            </div>
-        </div>
+         </div>
     </div>
 
     <div class="menu-section">
@@ -487,10 +468,10 @@
                 
                 <div class="share-buttons">
                     <button class="share-btn share-instagram" onclick="shareToInstagram()">
-                        📸 Compartilhar no Instagram
+                        📸 Salvar como imagem
                     </button>
                     <button class="share-btn share-whatsapp" onclick="shareToWhatsApp()">
-                        💬 Compartilhar no WhatsApp
+                        💬 Copiar texto
                     </button>
                 </div>
             </div>
@@ -581,6 +562,9 @@
             // Store current cart for the order summary
             const currentOrder = {...cart};
             
+            // Send order data to Google Sheets
+            sendOrderToSheets(currentOrder);
+            
             document.getElementById('cartModal').classList.remove('active');
             document.getElementById('orderNumber').textContent = `Pedido #${orderNumber}`;
             
@@ -630,6 +614,57 @@
             confirmationText.innerHTML = `Seu pedido ${itemText} foi confirmado e está sendo preparado!`;
         }
 
+        // Google Sheets Integration
+        function sendOrderToSheets(orderItems) {
+            // Replace this URL with your Google Apps Script web app URL
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec';
+            
+            if (GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec') {
+                console.log('Google Sheets integration not configured yet');
+                return;
+            }
+
+            // Prepare order data
+            const orderData = {
+                orderNumber: orderNumber,
+                timestamp: new Date().toISOString(),
+                items: [],
+                totalValue: 0,
+                itemCount: 0
+            };
+
+            // Process each item in the order
+            for (let item in orderItems) {
+                const itemData = {
+                    name: item,
+                    quantity: orderItems[item].quantity,
+                    unitPrice: orderItems[item].price,
+                    totalPrice: orderItems[item].price * orderItems[item].quantity
+                };
+                
+                orderData.items.push(itemData);
+                orderData.totalValue += itemData.totalPrice;
+                orderData.itemCount += itemData.quantity;
+            }
+
+            // Create combination string for analysis
+            orderData.combination = orderData.items.map(item => 
+                `${item.quantity}x ${item.name}`
+            ).join(' + ');
+
+            // Send to Google Sheets
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData)
+            }).catch(error => {
+                console.log('Error sending to Google Sheets:', error);
+            });
+        }
+
         function closeOrderComplete() {
             document.getElementById('orderModal').classList.remove('active');
         }
@@ -651,7 +686,7 @@
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'pedido.png', { type: 'image/png' })] })) {
                             const file = new File([blob], 'meu-pedido-ifood.png', { type: 'image/png' });
                             navigator.share({
-                                title: 'Meu pedido no iFood?',
+                                title: 'Meu pedido no ai Food?',
                                 files: [file]
                             });
                         } else {
@@ -662,27 +697,27 @@
                             a.download = 'meu-pedido-ifood.png';
                             a.click();
                             URL.revokeObjectURL(url);
-                            alert('📸 Imagem salva! Agora você pode compartilhar no Instagram!');
+                            alert('📸 Imagem salva! Agora você pode compartilhar em qualquer lugar!');
                         }
                     });
                 });
             } else {
                 // Fallback without html2canvas
-                const text = `🍔 Acabei de fazer um pedido no iFood?! Pedido #${orderNumber} - que fome! 😋 #ifood #burger`;
+                const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - que fome! 🤲 #aifood? #desejos`;
                 if (navigator.share) {
                     navigator.share({
-                        title: 'Meu pedido no iFood',
+                        title: 'Meu pedido no ai Food?',
                         text: text
                     });
                 } else {
                     navigator.clipboard.writeText(text);
-                    alert('Texto copiado! Cole no Instagram Stories 📸');
+                    alert('Texto copiado! Cole em qualquer lugar 📸');
                 }
             }
         }
 
         function shareToWhatsApp() {
-            const text = `🍔 Acabei de fazer um pedido no iFood?! Pedido #${orderNumber} - mal posso esperar! 😋`;
+            const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - mal posso esperar! 🤲`;
             const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
         }
