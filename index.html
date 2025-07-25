@@ -614,18 +614,13 @@
             confirmationText.innerHTML = `Seu pedido ${itemText} foi confirmado e está sendo preparado!`;
         }
     
-        // Google Sheets Integration
+ // Google Sheets Integration
         function sendOrderToSheets(orderItems) {
             // Replace this URL with your Google Apps Script web app URL
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec';
+            const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
             
-            console.log('Current GOOGLE_SCRIPT_URL value:', GOOGLE_SCRIPT_URL);
-            
-            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec') || !GOOGLE_SCRIPT_URL.startsWith('https://script.google.com')) {
-                console.log('Google Sheets integration not configured properly');
-                alert('Google Sheets URL not configured! Check the console for details.');
-                return;
-            }
+            console.log('Starting Google Sheets integration...');
+            console.log('Using URL:', GOOGLE_SCRIPT_URL);
 
             // Prepare order data
             const orderData = {
