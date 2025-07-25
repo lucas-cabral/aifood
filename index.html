@@ -267,19 +267,17 @@
         .order-complete {
             display: none;
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 2rem;
             background: linear-gradient(135deg, #ea1d2c 0%, #ff4757 100%);
             color: white;
-            border-radius: 20px;
-            margin: 0;
+            border-radius: 15px;
+            margin: 1rem;
             position: relative;
-            width: 1080px;
-            height: 1920px;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;
         }
         
         .order-complete.active {
@@ -288,16 +286,15 @@
         
         .order-complete h2 {
             color: white;
-            font-size: 4rem;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
             font-weight: bold;
         }
         
         .order-complete p {
             color: white;
-            font-size: 2.5rem;
-            margin: 1rem 0;
-            line-height: 1.4;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
         }
                 
         .success-icon {
@@ -708,20 +705,46 @@
         }
 
         function shareToInstagram() {
-            // Create a canvas to capture the order complete section
             const orderComplete = document.getElementById('orderComplete');
             
-            // Use html2canvas library for better results
+            // Aplica estilos temporários para captura
+            const originalStyle = orderComplete.style.cssText;
+            orderComplete.style.cssText = `
+                width: 1080px !important;
+                height: 1920px !important;
+                transform: scale(1) !important;
+                margin: 0 !important;
+                position: fixed !important;
+                top: -9999px !important;
+                left: -9999px !important;
+                font-size: 200% !important;
+            `;
+            
+            // Aumenta todos os elementos filhos
+            const elements = orderComplete.querySelectorAll('*');
+            const originalStyles = [];
+            elements.forEach((el, index) => {
+                originalStyles[index] = el.style.cssText;
+                el.style.fontSize = '200%';
+                el.style.padding = '2em';
+                el.style.margin = '1em 0';
+            });
+            
             if (typeof html2canvas !== 'undefined') {
                 html2canvas(orderComplete, {
                     backgroundColor: '#ea1d2c',
-                    scale: 2,
+                    scale: 1,
                     width: 1080,
                     height: 1920,
                     useCORS: true,
                     allowTaint: true
                 }).then(canvas => {
-                    // Convert canvas to blob and share
+                    // Restaura estilos originais
+                    orderComplete.style.cssText = originalStyle;
+                    elements.forEach((el, index) => {
+                        el.style.cssText = originalStyles[index];
+                    });
+                    
                     canvas.toBlob(blob => {
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'pedido.png', { type: 'image/png' })] })) {
                             const file = new File([blob], 'meu-pedido-aifood.png', { type: 'image/png' });
@@ -730,7 +753,6 @@
                                 files: [file]
                             });
                         } else {
-                            // Fallback: download the image
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
@@ -741,6 +763,8 @@
                         }
                     });
                 });
+            }
+        }
             } else {
                 // Fallback without html2canvas
                 const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - que fome! 🤲 #aifood? #desejos`;
