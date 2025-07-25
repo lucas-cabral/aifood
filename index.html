@@ -765,20 +765,6 @@
                 });
             }
         }
-            } else {
-                // Fallback without html2canvas
-                const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - que fome! 🤲 #aifood? #desejos`;
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Meu pedido no ai food?',
-                        text: text
-                    });
-                } else {
-                    navigator.clipboard.writeText(text);
-                    alert('Texto copiado! Cole em qualquer lugar 📸');
-                }
-            }
-        }
 
         function shareToWhatsApp() {
             const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - mal posso esperar! 🤲`;
