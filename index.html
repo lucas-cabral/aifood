@@ -613,14 +613,18 @@
             const confirmationText = document.querySelector('#orderComplete p');
             confirmationText.innerHTML = `Seu pedido ${itemText} foi confirmado e está sendo preparado!`;
         }
-
+    
         // Google Sheets Integration
         function sendOrderToSheets(orderItems) {
             // Replace this URL with your Google Apps Script web app URL
             const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec';
             
+            console.log('Current GOOGLE_SCRIPT_URL value:', GOOGLE_SCRIPT_URL);
+            console.log('URL check result:', GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec');
+            
             if (GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbzzYnnzLfaWsRbBCTGVYb38Usy_8Q20MUjgNmyVy3xsKNNBemIvEFG7qsxD1OJGnIHBtg/exec') {
                 console.log('Google Sheets integration not configured yet');
+                alert('Google Sheets URL not configured! Check the console for details.');
                 return;
             }
 
