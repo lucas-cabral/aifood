@@ -267,49 +267,83 @@
         .order-complete {
             display: none;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #ea1d2c 0%, #ff4757 100%);
+            color: white;
+            border-radius: 20px;
+            margin: 1rem;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .order-complete.active {
-            display: block;
+            display: flex;
+        }
+
+        .order-complete h2 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-complete p {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
         }
 
         .success-icon {
             font-size: 4rem;
-            color: #28a745;
+            color: #fff;
             margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .order-number {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #ea1d2c;
+            color: #fff;
             margin: 1rem 0;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            text-shadow: none;
         }
 
         .order-items {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            text-align: left;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 300px;
         }
 
         .order-items h3 {
             color: #ea1d2c;
-            margin-bottom: 0.5rem;
-            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
         }
 
         .order-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #ddd;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
         }
 
         .order-item:last-child {
             border-bottom: none;
+            font-weight: bold;
+            color: #ea1d2c;
         }
 
         .share-btn {
@@ -674,15 +708,17 @@
             // Use html2canvas library for better results
             if (typeof html2canvas !== 'undefined') {
                 html2canvas(orderComplete, {
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#ea1d2c',
                     scale: 2,
-                    width: 400,
-                    height: 600
+                    width: 500,
+                    height: 500,
+                    useCORS: true,
+                    allowTaint: true
                 }).then(canvas => {
                     // Convert canvas to blob and share
                     canvas.toBlob(blob => {
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'pedido.png', { type: 'image/png' })] })) {
-                            const file = new File([blob], 'meu-pedido-ifood.png', { type: 'image/png' });
+                            const file = new File([blob], 'meu-pedido-aifood.png', { type: 'image/png' });
                             navigator.share({
                                 title: 'Meu pedido no ai Food?',
                                 files: [file]
@@ -704,7 +740,7 @@
                 const text = `🌠 Acabei de fazer um pedido no ai Food?! Pedido #${orderNumber} - que fome! 🤲 #aifood? #desejos`;
                 if (navigator.share) {
                     navigator.share({
-                        title: 'Meu pedido no ai Food?',
+                        title: 'Meu pedido no ai food?',
                         text: text
                     });
                 } else {
